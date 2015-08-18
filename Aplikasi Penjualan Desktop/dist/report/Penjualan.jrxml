@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="918c811c-c5e2-4a60-bfe9-d6ef7e7bc239">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     faktur.`nomorfaktur` AS faktur_nomorfaktur,
+     faktur.`kodepelanggan` AS faktur_kodepelanggan,
+     faktur.`tanggalfaktur` AS faktur_tanggalfaktur,
+     fakturdetail.`id` AS fakturdetail_id,
+     fakturdetail.`nomorfaktur` AS fakturdetail_nomorfaktur,
+     fakturdetail.`kodebarang` AS fakturdetail_kodebarang,
+     fakturdetail.`qty` AS fakturdetail_qty,
+     fakturdetail.`harga` AS fakturdetail_harga,
+     pelanggan.`kodepelanggan` AS pelanggan_kodepelanggan,
+     pelanggan.`namapelanggan` AS pelanggan_namapelanggan,
+     pelanggan.`alamat` AS pelanggan_alamat,
+     barang.`kodebarang` AS barang_kodebarang,
+     barang.`namabarang` AS barang_namabarang,
+     barang.`Stok` AS barang_Stok,
+     barang.`HargaStandar` AS barang_HargaStandar
+FROM
+     `faktur` faktur INNER JOIN `fakturdetail` fakturdetail ON faktur.`nomorfaktur` = fakturdetail.`nomorfaktur`
+     LEFT OUTER JOIN `pelanggan` pelanggan ON faktur.`kodepelanggan` = pelanggan.`kodepelanggan`
+     INNER JOIN `barang` barang ON fakturdetail.`kodebarang` = barang.`kodebarang`]]>
+	</queryString>
+	<field name="faktur_nomorfaktur" class="java.lang.String"/>
+	<field name="faktur_kodepelanggan" class="java.lang.String"/>
+	<field name="faktur_tanggalfaktur" class="java.sql.Date"/>
+	<field name="fakturdetail_id" class="java.lang.Integer"/>
+	<field name="fakturdetail_nomorfaktur" class="java.lang.String"/>
+	<field name="fakturdetail_kodebarang" class="java.lang.String"/>
+	<field name="fakturdetail_qty" class="java.lang.Integer"/>
+	<field name="fakturdetail_harga" class="java.lang.Double"/>
+	<field name="pelanggan_kodepelanggan" class="java.lang.String"/>
+	<field name="pelanggan_namapelanggan" class="java.lang.String"/>
+	<field name="pelanggan_alamat" class="java.lang.String"/>
+	<field name="barang_kodebarang" class="java.lang.String"/>
+	<field name="barang_namabarang" class="java.lang.String"/>
+	<field name="barang_Stok" class="java.lang.Integer"/>
+	<field name="barang_HargaStandar" class="java.lang.Double"/>
+	<variable name="TOTAL_HARGA" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{fakturdetail_qty}*$F{fakturdetail_harga}]]></variableExpression>
+	</variable>
+	<variable name="GRAND_TOTAL" class="java.lang.Double" resetType="Group" resetGroup="faktur_nomorfaktur" calculation="Sum">
+		<variableExpression><![CDATA[$V{TOTAL_HARGA}]]></variableExpression>
+	</variable>
+	<group name="faktur_nomorfaktur" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{faktur_nomorfaktur}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<staticText>
+					<reportElement style="Column header" x="392" y="2" width="38" height="18" forecolor="#000000" uuid="2115ce6b-7416-4982-9c5b-ba5bd7a8ae18"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Qty]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="80" y="2" width="181" height="18" forecolor="#000000" uuid="31d69cc0-cf3a-4fa9-bbfc-5f75420c47dc"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Nama Barang]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="261" y="2" width="131" height="18" forecolor="#000000" uuid="2b3c3093-a554-4a34-bd19-a0455920cf2c"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Harga]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="4" y="2" width="76" height="18" forecolor="#000000" uuid="81de7608-f266-4352-a29d-5c51c25f4924"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Kode Barang]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="430" y="2" width="123" height="18" forecolor="#000000" uuid="92dd97f4-8ec9-45c4-aea8-027ccc367704"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="60">
+				<textField>
+					<reportElement x="430" y="11" width="123" height="20" uuid="b8e5455a-407b-4b74-af14-3ee62ec73cf8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{GRAND_TOTAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="317" y="11" width="109" height="20" uuid="6c11fba6-bd96-4f47-854d-6a49595663c7"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[GRAND TOTAL]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="5" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="272" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="148" width="553" height="107" forecolor="#B89F7D" backcolor="#333333" uuid="8185cff8-07fc-4688-880d-06b4dd15bdf4"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="SubTitle" isPrintRepeatedValues="false" x="112" y="13" width="193" height="24" forecolor="#FFFFFF" uuid="4e8c6eb0-70e7-4f5f-8df2-100b5c67e4be"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{faktur_nomorfaktur}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="2" y="46" width="96" height="18" forecolor="#FFFFFF" uuid="a99d369b-9400-4aa3-b2cf-2ff1b4183cd2"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[PELANGGAN :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="112" y="46" width="97" height="18" forecolor="#FFFFFF" uuid="7e089413-63e7-4376-99a6-a756b2755010"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{faktur_kodepelanggan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="315" y="16" width="156" height="18" forecolor="#FFFFFF" uuid="761e2603-0d79-42fc-9f84-4e58cae0f2c6"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{faktur_tanggalfaktur}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="219" y="46" width="252" height="18" forecolor="#FFFFFF" uuid="8d4e363d-6318-4464-8ef4-80ebd890f3d6"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pelanggan_namapelanggan}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="112" y="77" width="359" height="18" forecolor="#FFFFFF" uuid="83fd8e53-1f9e-453d-9534-1de81e709ee0"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pelanggan_alamat}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" x="2" y="16" width="96" height="18" forecolor="#FFFFFF" uuid="1325bf82-f3e5-4a38-a29e-78ac5588eb84"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[FAKTUR         :]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="451" height="95" backcolor="#333333" uuid="c0d098ac-eb95-4eb5-a14f-d5c290f9522e"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="370" height="66" uuid="c040e3ee-4e29-40f5-bf6d-814cdfe51833"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Penjualan]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="SubTitle" x="157" y="66" width="249" height="29" uuid="31a931ce-4a15-4277-bdcc-567b45cdd6c3"/>
+					<textElement>
+						<font size="22" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Faktur Penjualan]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="95" width="451" height="32" forecolor="#000000" backcolor="#006666" uuid="c0fedb4f-19aa-4318-82d6-1803609a6ed4"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="307" y="12" width="144" height="20" forecolor="#FFFFFF" uuid="fde1b8b7-0b40-4e69-a37b-3b634a29298e"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<image>
+				<reportElement x="456" y="0" width="99" height="127" uuid="ccb04b8c-d570-4d28-ba5d-7639531d4b8c"/>
+				<imageExpression><![CDATA["cherry.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="18" uuid="50081d23-cda6-4557-9bb2-f7d75ad7cc23"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="6" y="0" width="74" height="18" forecolor="#000000" uuid="b16ed314-1c44-4514-a953-d426a4007ee2"/>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fakturdetail_kodebarang}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="261" y="0" width="131" height="18" forecolor="#000000" uuid="7f096adb-0a2b-45ff-807a-111ab4e1bedc"/>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fakturdetail_harga}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="80" y="0" width="181" height="18" uuid="18004a94-b9cc-4173-9af6-676bc36596e4"/>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{barang_namabarang}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="392" y="0" width="38" height="18" forecolor="#000000" uuid="2b54a1f0-d694-41fe-9326-8862a218900f"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fakturdetail_qty}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="0" width="123" height="18" uuid="92ab03bf-4836-4321-9057-05b7f7a87780"/>
+					<textFieldExpression><![CDATA[$V{TOTAL_HARGA}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="12" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="477ea262-88a0-4dcd-91ad-d8b034607208"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000" uuid="df6ab114-94d5-4474-9339-3d429b4d6d91"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#FFFFFF" uuid="4b27e86d-0c7d-471f-921e-5c54ca2630c7"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="e215eb52-2bb7-4904-b1d7-8f8069cc2499"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="1" width="197" height="20" forecolor="#FFFFFF" uuid="ecad844c-a94e-4dd7-9d69-991bfcb9e8ff"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
